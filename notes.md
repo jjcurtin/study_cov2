@@ -1,6 +1,6 @@
 # Meeting notes
 
-# 2026-=07-16
+# 2026-07-16
 
 We will perform a simulation study investigating three common approaches to covariate selection across various research contexts, to determine which approach results in the lowest average type I error
 
