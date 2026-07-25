@@ -24,7 +24,7 @@ We may also consider a fourth type of covariate:
 - Consequences of causal covariates
 	- These are consequences of causal covariates, which are only correlated with Y because of their correlation with causal covariates
 	- These we wouldn't want to include in our models, because they can decrease power / lead to inefficiencies, unless we use them in place of causal covariates
-	- Example: when examining the relationship between parents' cultural values and child mental health, we'd want to include generational status but not primary language as a covariate, because generational status influences cultural values, child mental health, and primary language, whereas primary language does not independently influence child mental health
+	- Example: when examining the relationship between parents' cultural values and child mental health, we'd want to include generational status but not primary language as a covariate, because generational status influences cultural values and child mental health; generational status also influences primary language, which does not independently influence child mental health
 
 Finally, we decided that we will also likely include LASSO as a covariate selection approach
 
