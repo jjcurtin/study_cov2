@@ -1,0 +1,74 @@
+---
+title: "Make results tibble"
+author: "Kendra Wyant"
+date: last-modified
+number-sections: true
+format: 
+  html: 
+    embed-resources: true
+    toc: true 
+    toc_depth: 5
+execute:
+  echo: false
+editor_options: 
+  chunk_output_type: console
+---
+
+This script makes a raw data set of all results (`results.csv`), a summary table of results for figures (`results_tibble.csv`) and a parameter estimate table (`estimate_tibble.csv`).
+
+
+```{r}
+#| label: read in data
+#| code-fold: true
+
+library(tidyverse)
+
+path_chtc <- "\\\\research.drive.wisc.edu\\jjcurtin\\studydata\\cov\\chtc\\batch_2026-04-30\\output"
+path_processed <- "\\\\research.drive.wisc.edu\\jjcurtin\\studydata\\cov\\data_processed"
+
+d <- data.table::fread(here::here(path_chtc, "batch_results.csv"))
+```
+
+
+Save out data to `data_processed`
+```{r}
+d |> 
+  write_csv(here::here(path_processed, "results.csv"))
+```
+
+
+### Calculate type 1 and type 2 error
+
+Calculate error rates
+```{r}
+d_tibble <- d |> 
+  group_by(method, n_obs, n_covs, r_ycov, p_good_covs, b_x) |> 
+  summarise(type_I = mean(p_value < 0.05),
+            type_II = mean(p_value >= 0.05),
+            .groups = "drop")
+
+d_tibble <- d_tibble|> 
+  mutate(type_I = if_else(b_x != 0.0, NA_real_, type_I),
+         type_II = if_else(b_x == 0.0, NA_real_, type_II))
+```
+
+Save out tibble
+```{r}
+d_tibble |> 
+  write_csv(here::here(path_processed, "results_tibble.csv"))
+```
+
+### Create Parameter Estimate summary table
+
+```{r}
+d_param <- d |> 
+  group_by(method, b_x) |> 
+  summarise(mean = mean(estimate), .groups = "drop") |> 
+  pivot_wider(names_from = b_x, values_from = mean)  |> 
+  glimpse()
+
+d_param |> 
+  write_csv(here::here(path_processed, "estimate_tibble.csv"))
+```
+
+
