@@ -1,6 +1,10 @@
 # Meeting notes
 
-# 2027-07-24
+# 2026-08-21
+
+We reviewed the function file from the first covariates study, and discussed creating functions for our three types of covariates (causal, distractor, and consequences of X). We decided that we would create X, Y, and covariates as normally-distributed continuous variables (mean = 0, SD = 1) that are uncorrelated with each other (in terms of the variance-covariance matrix), and then introduce causal relationships between them (based on the type of covariate).
+
+# 2026-07-24
 
 We decided that for now we will explore contexts where X has no effect on Y, *and* contexts where X has an effect on Y; this will allow us to explore methods for controlling for confounding variables while maintaining statistical power; if the story becomes too complicated, we can split our findings into two papers
 
@@ -42,7 +46,6 @@ The covariate selection approaches are:
 - Regressing Y on all covariates together (but not our focal variable) to determine which covariates to include
 - Regressing Y on each covariate separately to determine which covariates to include
 <!--Do we  need to consider other methods from experimental cov paper-->
-
 
 The research contexts we manipulate will be:
 
