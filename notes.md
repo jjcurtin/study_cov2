@@ -1,5 +1,35 @@
 # Meeting notes
 
+# 2026-09-04
+
+To deal with the issue of means and SDs shifting from 0 and 1 (respectively) after we incorporate a causal structure, we determined that we will simply incorporate the causal relationships into our variance/covariance matrix (i.e., our sigma). We will specify the path diagrams and their coefficients, and calculate our sigma from there. In general, we will start with simple code, and build up from there to more complex scenarios.
+
+We also talked about which parameters we care most about varying, since we can't vary them all. We decided that we care most about examining:
+
+- The three causal structures (causal, distractor, and consequences of X)
+- Zero and a non-zero effects of X on Y
+- Reliability of covariates
+- Sample size (N)
+
+After that, we can consider:
+
+- Number of covariates
+- Size of the non-zero effect of X on Y
+- Covariate effects on X and Y (where relevant) [EG note: this might matter if we use LASSO]
+- Reliability of X
+- Correlations among our covariates
+
+We will return to this conversation at a later date, and consider factors like:
+
+- What is going to have big effects
+- When it will work vs. not work to use covariates
+- Which scenarios people might not appreciate
+
+As next steps, Elise will write code to create sigma from a path diagram, and confirm that this approach works (that is, that we get back out our path diagram coefficients after running regressions). We will start by using a very simple structure: the causal covariates context, with one covariate, and r_cov set to NULL. Elise will also begin thinking about what a two-covariate version (and eventually, an n-covariate version) would look like. (If that is proving too challenging, we can always just create separate statements for each number of covariates.) We will then run a simulation with the causal covariates context, and eventually loop back to the other contexts.
+
+Finally, for future virtual meetings, we will record our meetings and use an agent to generate notes for us.
+
+
 # 2026-08-21
 
 We reviewed the function file from the first covariates study, and discussed creating functions for our three types of covariates (causal, distractor, and consequences of X). We decided that we would create X, Y, and covariates as normally-distributed continuous variables (mean = 0, SD = 1) that are uncorrelated with each other (in terms of the variance-covariance matrix), and then introduce causal relationships between them (based on the type of covariate).
