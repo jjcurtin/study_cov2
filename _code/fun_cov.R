@@ -1,5 +1,6 @@
 # function to generate data for causal covariates
-generate_cc <- function(n_obs, n_covs, b_x_y, b_cov_x, b_cov_y, r_cov, e_x, e_cov) {
+generate_cc <- function(n_obs, n_covs, b_x_y, b_cov_x, b_cov_y, r_cov, e_x, e_cov,
+                        empirical = FALSE) {
   
   # generates continuous x, y, and covariates with mean = 0, variance = 1
   # reflects causal relationship where x causes y (as long as b_x_y is non-zero)
@@ -60,7 +61,8 @@ generate_cc <- function(n_obs, n_covs, b_x_y, b_cov_x, b_cov_y, r_cov, e_x, e_co
   
   # make x, y, and covs
   # all with mean = 0 and variance = 1
-  x_y_covs <- MASS::mvrnorm(n_obs, mu = rep(0, n_covs + 2), Sigma = sigma, empirical = TRUE)
+  x_y_covs <- MASS::mvrnorm(n_obs, mu = rep(0, n_covs + 2), Sigma = sigma, 
+                            empirical = empirical)
   
   # convert to dataframe and rename variables
   x_y_covs <- as.data.frame(x_y_covs) |>
@@ -74,38 +76,6 @@ generate_cc <- function(n_obs, n_covs, b_x_y, b_cov_x, b_cov_y, r_cov, e_x, e_co
     x_y_covs = x_y_covs))
 }
 
-# test causal covariate function
-
-  # specify example parameters
-  n_obs <- 100
-  n_covs <- 3
-  b_x_y <- .4
-  b_cov_x <- c(.2, .1, .15) 
-  b_cov_y <- c(.25, .35, .05)
-  r_cov <- .3
-
-  # run function
-  results <- generate_cc(n_obs = n_obs, n_covs = n_covs, b_x_y = b_x_y, b_cov_x = b_cov_x,
-              b_cov_y = b_cov_y, r_cov = r_cov)
-
-  # create objects to store regression coefficients
-  reg_cov_y <- numeric(n_covs)
-  reg_cov_x <- numeric(n_covs)
-  
-  # run regressions and compare coefficients to path coefficients
-  cov_names <- grep("^c", names(results$x_y_covs), value = TRUE)
-  lm_cov_y <- lm(reformulate(c("x", cov_names), response = "y"), data = results$x_y_covs)
-  lm_cov_x <- lm(reformulate(cov_names, response = "x"), data = results$x_y_covs)
-  stopifnot(abs(coef(lm_cov_y)[2]) - b_x_y < 1e-10)
-  
-  for (i in 1:n_covs){
-    col_num_y <- i + 2
-    col_num_x <- i + 1
-    reg_cov_y[i] <- coef(lm_cov_y)[col_num_y]
-    reg_cov_x[i] <- coef(lm_cov_x)[col_num_x]
-    stopifnot(abs(reg_cov_y[i] - b_cov_y[i]) < 1e-10)
-    stopifnot(abs(reg_cov_x[i] - b_cov_x[i]) < 1e-10)
-  }
 
 ########################################
 # NEED TO UPDATE THESE AT A LATER DATE #
@@ -203,4 +173,41 @@ generate_conseq <- function(n_obs, n_covs, b_x_y, b_x_cov, r_cov, e_x, e_cov) {
   
   tibble::tibble(x = x, y = y) |> 
     dplyr::bind_cols(covs)
+}
+
+
+
+# fit no covariate model
+# Fits linear model with no covariates
+fit_no_covs <- function(d) {
+  lm(y ~ x, data = d)
+}
+
+
+# fit all covariate model
+# Fits linear model with all available covariates
+fit_all_covs <- function(d) {
+  lm(y ~ ., data = d)
+}
+
+
+# make results tibble
+get_results <- function(model, method, sim_num) {
+  # model: an lm object
+  # method: The name of the method used to select covariates (e.g., ) 
+  # sim: simulation number
+ 
+  ndf <- model |> broom::glance() |> dplyr::pull(df)
+  ddf <- model |> broom::glance() |> dplyr::pull(df.residual)
+  output <- model |> broom::tidy() |> dplyr::filter(term == "x")
+ 
+ 
+  # put it all in a results tibble 
+  tibble::tibble(method = method, 
+                 simulation_id = sim_num,
+                 estimate = output$estimate,
+                 SE = output$std.error,
+                 p_value = output$p.value,
+                 ndf = ndf,
+                 ddf = ddf)
 }
