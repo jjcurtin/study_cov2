@@ -1,5 +1,28 @@
 # Meeting notes
 
+# 2026-09-15
+
+We began updating the fit_cov file to run simulations. We will start with the causal covariates framework, and vary parameters as follows:
+
+- The effect of X on Y: 0 (no effects) and 0.3 (moderate effects)
+- Sample size: 100, 200, 300, and 500
+- Correlation between covariates and X: 0.1 (small effects) and 0.3 (moderate effects) [EG note: are these the path coefficients?]
+- Correlation between covariates and Y: 0.1 (small effects) and 0.3 (moderate effects) [will be the same as above]
+- Number of covariates: 1, 2, and 4
+- Number of simulations per research setting: 1,000
+
+As next steps, Elise will:
+
+- Install WinSCP to transfer files
+- Set empirical as a parameter (equal to TRUE or FALSE)
+- Prepare to present at the Oct. 7 lab meeting to talk through which research contexts to vary
+- Update parameter names in the fun_cov file so they match what we have in fit_cov
+- Extract vectors from the bracketed format we'll use in our .csv file 
+- Generally tidy up the fit_cov file
+
+Next time we meet, we will write CHTC code.
+
+
 # 2026-09-04
 
 To deal with the issue of means and SDs shifting from 0 and 1 (respectively) after we incorporate a causal structure, we determined that we will simply incorporate the causal relationships into our variance/covariance matrix (i.e., our sigma). We will specify the path diagrams and their coefficients, and calculate our sigma from there. In general, we will start with simple code, and build up from there to more complex scenarios.
