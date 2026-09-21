@@ -36,7 +36,7 @@ e_x <- as.numeric(args[10])
 e_cov <- as.numeric(args[11])
 empirical <- FALSE
 
-#source("fun_cov.R")
+#source("fun_cov2.R")
 
 #---------------------------
 # for testing
@@ -44,7 +44,7 @@ job_num <- 1
 dgp <- "cc"
 n_sims <- 100 
 n_obs <- 100 
-n_covs <- 2 
+n_covs <- 2
 r_xy <- 0
 r_cy <- "[.3, .3]" 
 r_cx <- "[.3, .3]" 
@@ -52,7 +52,7 @@ r_cc <- 0
 e_x <- NULL
 e_cov <- NULL
 empirical <- FALSE
-source("_code/fun_cov.R")
+source("_code/fun_cov2.R")
 #---------------------------
 
 # Loop over sims
