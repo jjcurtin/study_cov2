@@ -4,41 +4,52 @@ source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true
 
 path_chtc <- format_path(str_c("cov2/chtc/batch_", Sys.Date()))
 
-job_num <- as.numeric(args[1])
-dgp <- args[2]
-n_sims <- as.numeric(args[3])
-n_obs <- as.numeric(args[4])
-n_covs <- as.numeric(args[5])
-b_xy <- as.numeric(args[6])
-b_cy <- as.numeric(args[7])
-b_cx <- as.numeric(args[8])
-r_cc <- as.numeric(args[9])
-e_x <- as.numeric(args[10])
-e_cov <- as.numeric(args[11])
-
-
-
-# UPDATE HERE
+dgp_lvls <- c("cc", "distr", "conseq")
 n_obs_lvls <- c(100, 200, 300, 500)
 n_covs_lvls <- c(1, 2, 4)
-#p_good_covs_lvls <- c(0.25, 0.5, 0.75)
-r_ycov_lvls <- c(0.1, 0.3)    # correlation between y and covs
-r_xcov_lvls <- c(0.1, 0.3)    # correlation between x and covs
-b_x_lvls <- c(0, 0.3)    # correlation between x and y
+b_xy_lvls <- c(0, 0.3)     # path coefficient between x and y
+b_cy_lvls <- c(0.1, 0.3)   # path coefficient between y and covs
+b_cx_lvls <- c(0.1, 0.3)   # path coefficient between x and covs
+r_cc_lvls <- c(0, .3)      # correlation between covs
+e_x_lvls <- c(0, 0.1)      # measurement error in x
+e_cov_lvls <- c(0, 0.1)    # measurement error in covs
+ 
+#---------------------------
+# for testing
+dgp_lvls <- c("cc")
+n_obs_lvls <- c(500)
+n_covs_lvls <- c(1, 4)
+b_xy_lvls <- c(0, 0.3)     # path coefficient between x and y
+b_cy_lvls <- c(0.1)   # path coefficient between y and covs
+b_cx_lvls <- c(0.1)   # path coefficient between x and covs
+r_cc_lvls <- c(.3)      # correlation between covs
+e_x_lvls <- c(0.1)      # measurement error in x
+e_cov_lvls <- c(0.1)    # measurement error in covs
+#---------------------------
 
 # we want 40,000 simulations
 # batching jobs at 500 sims per job
 # 500 * 80 repeats = 40,0000 sims
 
-# UPDATE HERE
-jobs <- expand_grid(n_sims = 500,
+jobs <- expand_grid(dgp = dgp_lvls,
+                    n_sims = 500,
                     n_obs = n_obs_lvls,
-                    b_x = b_x_lvls,
                     n_covs = n_covs_lvls,
-                    r_ycov = r_ycov_lvls,
-                    r_xcov = r_xcov_lvls,
-                    #p_good_covs = p_good_covs_lvls,
-                    r_cov = 0.3) |> 
+                    b_xy = b_xy_lvls,
+                    b_cy = b_cy_lvls,
+                    b_cx = b_cx_lvls,
+                    r_cc = r_cc_lvls,
+                    e_x = e_x_lvls,
+                    e_cov = e_cov_lvls) |> 
+  mutate(
+    b_cy = mapply(
+      \(x, n) paste0("[", paste(rep(x, n), collapse = ", "), "]"),
+      b_cy, n_covs
+    ),
+    b_cx = mapply(
+      \(x, n) paste0("[", paste(rep(x, n), collapse = ", "), "]"),
+      b_cx, n_covs
+    )) |>
   slice(rep(1:n(), each = 80)) |> 
   mutate(job_num = row_number()) |> 
   relocate(job_num)

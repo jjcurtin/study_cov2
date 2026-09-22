@@ -1,5 +1,26 @@
 # Meeting notes
 
+# 2026-09-22
+
+We reviewed and began updating the mak_jobs2.R, cov2.sub, and cov2.sh files. We also created error and results folders in our home directory.
+
+As next steps, Elise will:
+
+- Finish updating the three files to reflect the research contexts we are varying [EG note: I also need to update mak_jobs2.R to ensure that b_cy and b_cx appear as vectors in the format specified in fit_cov2.R]
+- In mak_jobs2.R, define a more limited set of parameter values that we will vary to test out our code (including values that will require as much computational power as we expect we'll need, to be sure we have sufficient memory set up) 
+- Make sure she has access to the lab research drive
+
+Next time, we will:
+
+- Test out our code on a limited number of jobs
+- Determine whether train.sif needs to be included in the list of transfer files in cov2.sub (by running a subfile that doesn't include it and seeing if we get an error)
+
+Eventually, we may also need to:
+
+- Update requested memory and disk parameters in cov2.sub
+- Change file naming in the mak_jobs2.R file (if we want to run different batches and combine them)
+
+
 # 2026-09-15
 
 We began updating the fit_cov file to run simulations. We will start with the causal covariates framework, and vary parameters as follows:

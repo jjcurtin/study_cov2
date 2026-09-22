@@ -1,4 +1,4 @@
-job_num,method,simulation_id,estimate,SE,p_value,ndf,ddf,n_obs,dgp,r_xy,r_cy,r_cx,r_cc
+job_num,method,simulation_id,estimate,SE,p_value,ndf,ddf,n_obs,dgp,b_xy,b_cy,b_cx,r_cc
 1,all_covs,1,-0.04944085890434568,0.11033359712908936,0.655088248987594,3,96,100,cc,0,"[0.3, 0.3]","[0.3, 0.3]",0
 1,all_covs,2,-0.014092186298252905,0.10764149290151827,0.8961143014023105,3,96,100,cc,0,"[0.3, 0.3]","[0.3, 0.3]",0
 1,all_covs,3,0.047090890464093364,0.11934326180351625,0.6940254925963638,3,96,100,cc,0,"[0.3, 0.3]","[0.3, 0.3]",0
