@@ -4,6 +4,21 @@ source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true
 
 path_chtc <- format_path(str_c("cov2/chtc/batch_", Sys.Date()))
 
+job_num <- as.numeric(args[1])
+dgp <- args[2]
+n_sims <- as.numeric(args[3])
+n_obs <- as.numeric(args[4])
+n_covs <- as.numeric(args[5])
+b_xy <- as.numeric(args[6])
+b_cy <- as.numeric(args[7])
+b_cx <- as.numeric(args[8])
+r_cc <- as.numeric(args[9])
+e_x <- as.numeric(args[10])
+e_cov <- as.numeric(args[11])
+
+
+
+# UPDATE HERE
 n_obs_lvls <- c(100, 200, 300, 500)
 n_covs_lvls <- c(1, 2, 4)
 #p_good_covs_lvls <- c(0.25, 0.5, 0.75)
@@ -14,6 +29,8 @@ b_x_lvls <- c(0, 0.3)    # correlation between x and y
 # we want 40,000 simulations
 # batching jobs at 500 sims per job
 # 500 * 80 repeats = 40,0000 sims
+
+# UPDATE HERE
 jobs <- expand_grid(n_sims = 500,
                     n_obs = n_obs_lvls,
                     b_x = b_x_lvls,

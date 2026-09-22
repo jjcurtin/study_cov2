@@ -1,7 +1,22 @@
-# cov.sub 
-container_image = osdf:///chtc/staging/Kpaquette2/train.sif
+# cov2.sub 
+container_image = osdf:///chtc/staging/e/egurney2/train.sif
+
+
+job_num <- as.numeric(args[1])
+dgp <- args[2]
+n_sims <- as.numeric(args[3])
+n_obs <- as.numeric(args[4])
+n_covs <- as.numeric(args[5])
+b_xy <- as.numeric(args[6])
+b_cy <- as.numeric(args[7])
+b_cx <- as.numeric(args[8])
+r_cc <- as.numeric(args[9])
+e_x <- as.numeric(args[10])
+e_cov <- as.numeric(args[11])
+
 
 executable = cov2.sh
+# UPDATE HERE AND BELOW
 arguments = $(job_num) $(n_sims) $(n_obs) $(b_x) $(n_covs) $(r_ycov) $(p_good_covs) $(r_cov)
 
 log = $(Cluster).log
@@ -19,4 +34,6 @@ request_memory = 2000MB
 request_disk = 1000MB
 want_campus_pools = true
 want_ospool = true
+
+# UPDATE HERE
 queue job_num n_sims n_obs b_x n_covs r_ycov p_good_covs r_cov from jobs.csv
