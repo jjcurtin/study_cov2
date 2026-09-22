@@ -2,7 +2,7 @@
 library(tidyverse)
 source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
 
-path_chtc <- format_path(str_c("cov/chtc/batch_", Sys.Date()))
+path_chtc <- format_path(str_c("cov2/chtc/batch_", Sys.Date()))
 
 n_obs_lvls <- c(100, 200, 300, 500)
 n_covs_lvls <- c(1, 2, 4)
@@ -38,7 +38,7 @@ jobs |> write_csv(here::here(path_chtc, "input", "jobs.csv"),
                   col_names = FALSE)
 
 # copy other files
-file.copy("_code/cov.sh", here::here(path_chtc, "input"))
-file.copy("_code/cov.sub", here::here(path_chtc, "input"))
+file.copy("_code/cov2.sh", here::here(path_chtc, "input"))
+file.copy("_code/cov2.sub", here::here(path_chtc, "input"))
 file.copy("_code/fit_cov2.R", here::here(path_chtc, "input"))
 file.copy("_code/fun_cov2.R", here::here(path_chtc, "input"))
