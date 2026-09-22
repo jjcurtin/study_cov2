@@ -14,9 +14,9 @@
 # the research setting/characteristics of the dataset. These include:
   # n_obs = number of observations in the dataset
   # n_covs = The number of covariates in the dataset
-  # r_xy = The path coefficient between x and y
-  # r_cx = path coefficients between covariates and x; will be a vector
-  # r_cy = path coefficients between covariates and y; will be a vector
+  # b_xy = The path coefficient between x and y
+  # b_cx = path coefficients between covariates and x; will be a vector
+  # b_cy = path coefficients between covariates and y; will be a vector
   # r_cc = path coefficients between covariates; currently coded as a scalar
   # e_x = measurement error in x
   # e_cov = measurement error in covariates
@@ -28,9 +28,9 @@ dgp <- args[2]
 n_sims <- as.numeric(args[3])
 n_obs <- as.numeric(args[4])
 n_covs <- as.numeric(args[5])
-r_xy <- as.numeric(args[6])
-r_cy <- as.numeric(args[7])
-r_cx <- as.numeric(args[8])
+b_xy <- as.numeric(args[6])
+b_cy <- as.numeric(args[7])
+b_cx <- as.numeric(args[8])
 r_cc <- as.numeric(args[9])
 e_x <- as.numeric(args[10])
 e_cov <- as.numeric(args[11])
@@ -45,9 +45,9 @@ dgp <- "cc"
 n_sims <- 100 
 n_obs <- 100 
 n_covs <- 2
-r_xy <- 0
-r_cy <- "[.3, .3]" 
-r_cx <- "[.3, .3]" 
+b_xy <- 0
+b_cy <- "[.3, .3]" 
+b_cx <- "[.3, .3]" 
 r_cc <- 0
 e_x <- NULL
 e_cov <- NULL
@@ -59,28 +59,28 @@ source("_code/fun_cov2.R")
 set.seed(job_num)
 full_results <- tibble::tibble()
 
-# process r_cy to vector
-r_cy <- as.numeric(strsplit(gsub("\\[|\\]| ", "", r_cy), ",")[[1]])
+# process b_cy to vector
+b_cy <- as.numeric(strsplit(gsub("\\[|\\]| ", "", b_cy), ",")[[1]])
 
-# process r_cx to vector
-r_cx <- as.numeric(strsplit(gsub("\\[|\\]| ", "", r_cx), ",")[[1]])
+# process b_cx to vector
+b_cx <- as.numeric(strsplit(gsub("\\[|\\]| ", "", b_cx), ",")[[1]])
 
 for(i in 1:n_sims) {
 
   # generate data for research setting 
   if (dgp == "cc") { 
-    di <- generate_cc(n_obs = n_obs, n_covs = n_covs, r_xy = r_xy, r_cx = r_cx,
-                      r_cy = r_cy, r_cc = r_cc, e_x = e_x, e_cov = e_cov,
+    di <- generate_cc(n_obs = n_obs, n_covs = n_covs, b_xy = b_xy, b_cx = b_cx,
+                      b_cy = b_cy, r_cc = r_cc, e_x = e_x, e_cov = e_cov,
                       empirical = empirical)$x_y_covs
   } 
   
   if (dgp == "distr") { 
-    di <- generate_distr(n_obs = n_obs, n_covs = n_covs, r_xy = r_xy, r_cc = r_cc,
+    di <- generate_distr(n_obs = n_obs, n_covs = n_covs, b_xy = b_xy, r_cc = r_cc,
                          e_x = e_x, e_cov = e_cov, empirical = empirical)$x_y_covs
   } 
   
   if (dgp == "conseq") { 
-    di <- generate_conseq(n_obs = n_obs, n_covs = n_covs, r_xy = r_xy, r_xc = r_xc,
+    di <- generate_conseq(n_obs = n_obs, n_covs = n_covs, b_xy = b_xy, b_xc = b_xc,
                           r_cc = r_cc, e_x = e_x, e_cov = e_cov, empirical)$x_y_covs
   }
   
@@ -108,9 +108,9 @@ full_results <- full_results |>
 research_setting <- tibble::tibble(job_num = job_num,
                                    n_obs = n_obs,
                                    dgp = dgp,
-                                   r_xy = r_xy,
-                                   r_cy = paste0("[", toString(r_cy), "]"),
-                                   r_cx = paste0("[", toString(r_cx), "]"),
+                                   b_xy = b_xy,
+                                   b_cy = paste0("[", toString(b_cy), "]"),
+                                   b_cx = paste0("[", toString(b_cx), "]"),
                                    r_cc = r_cc,
                                    e_x = e_x,
                                    e_cov = e_cov)
