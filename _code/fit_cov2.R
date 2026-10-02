@@ -29,31 +29,18 @@ n_sims <- as.numeric(args[3])
 n_obs <- as.numeric(args[4])
 n_covs <- as.numeric(args[5])
 b_xy <- as.numeric(args[6])
-b_cy <- as.numeric(args[7])
-b_cx <- as.numeric(args[8])
+b_cy <- (args[7])
+b_cx <- (args[8])
 r_cc <- as.numeric(args[9])
 e_x <- as.numeric(args[10])
 e_cov <- as.numeric(args[11])
 empirical <- FALSE
 
-#source("fun_cov2.R")
-
-#---------------------------
-# for testing
-job_num <- 1 
-dgp <- "cc"
-n_sims <- 100 
-n_obs <- 100 
-n_covs <- 2
-b_xy <- 0
-b_cy <- "[.3, .3]" 
-b_cx <- "[.3, .3]" 
-r_cc <- 0
-e_x <- NULL
-e_cov <- NULL
-empirical <- FALSE
-source("_code/fun_cov2.R")
-#---------------------------
+source("fun_cov2.R")
+library(tibble)
+library(readr)
+library(stringr)
+library(dplyr)
 
 # Loop over sims
 set.seed(job_num)
