@@ -1,5 +1,22 @@
 # Meeting notes
 
+# 2026-09-29 & 2026-10-02
+
+We executed our code though CHTC on a truncated version of jobs.csv, and successfully identified and fixed errors and warnings relating to string vs. numeric variables, where we sourced fun_cov2.R from, and namespace issues.
+
+As next steps, Elise will:
+
+- Prepare a 10-minute presentation for the Oct. 7 lab meeting, to frame a guided discussion for which research contexts to manipulate
+- Remove calls to library
+- Determine why we are getting 1000 jobs, instead of 500 [EG note: it's because we are running the code for two covariate selection approaches: all covariates, and no covariates]
+
+Eventually, we can:
+
+- Determine how many simulations we want to batch together
+- Continue updating our combine.sh file to remove interim files, etc. (once we know everything is working)
+- Decide which research contexts to manipulate (including DGPs), based on our discussion in lab meeting
+
+
 # 2026-09-22
 
 We reviewed and began updating the mak_jobs2.R, cov2.sub, and cov2.sh files. We also created error and results folders in our home directory.

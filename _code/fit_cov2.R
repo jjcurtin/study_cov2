@@ -37,10 +37,6 @@ e_cov <- as.numeric(args[11])
 empirical <- FALSE
 
 source("fun_cov2.R")
-library(tibble)
-library(readr)
-library(stringr)
-library(dplyr)
 
 # Loop over sims
 set.seed(job_num)
