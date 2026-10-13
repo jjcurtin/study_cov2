@@ -1,5 +1,27 @@
 # Meeting notes
 
+# 2026-10-13
+
+We discussed next directions to take after reading the Wysocki et al. (2022) article. We determined that the paper had done much of what we were planning to do (but, in some cases, in a cleaner way). We talked about how we'd have to position our study as an extension of that paper, and make sure that it was in fact contributing to the literature (and not simply replicating what they had done). We talked about the following potential ways that we could differentiate our paper / extend the Wysocki et al. paper:
+
+- Explicitly testing the implication they make about data-driven approaches generally resulting in bias
+- Examining Type I and Type II error rates (not just bias), which accounts for variance across research contexts and statistical significance
+- Including two additional DGPs (irrelevant variables and independent causes of Y)
+- Varying additional research contexts (e.g., amount of measurement error, relationship between C and Y)
+- Examining cases where X has no effect on Y (given that false positives are often more problematic)
+
+
+# 2026-10-6
+
+We reviewed the PPT Elise had prepared for lab meeting, and discussed the following changes:
+
+- Clarifying why covariates are used when analyzing experimental vs. observation data
+- Moving the DGPs to the front (and referring to those terms, rather than "good" and "bad" covariates)
+- Emphasizing the additional goal of our study (related to highlighting the problems with measurement error)
+- Clarifying the steps to a simulation study
+- Mentioning bias, not just Type I and Type II error rates
+
+
 # 2026-09-29 & 2026-10-02
 
 We executed our code though CHTC on a truncated version of jobs.csv, and successfully identified and fixed errors and warnings relating to string vs. numeric variables, where we sourced fun_cov2.R from, and namespace issues.
