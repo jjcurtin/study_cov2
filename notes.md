@@ -1,5 +1,32 @@
 # Meeting notes
 
+# 2026-10-14 (Lab Meeting)
+
+Peoples’ main issues with the Wysocki paper were that it advocated for theoretically selecting covariates, and highlighted the problems surrounding measurement error, but it didn’t provide concrete steps for how to actually select covariates. They also felt that including specific examples (both from simulations and from our fields) could help make the points from the Wysocki article more concrete.
+
+We discussed providing three main guidelines to help people determine whether they can use statistical control for making causal inferences, which can be supported by simulations and/or hypothetical population models:
+
+(1) How confident do you feel in the reliability of your putative confounders?
+	- Important to demonstrate reliability
+	- May or may not require simulations (depending on how Wysocki et al. accounted for measurement error, and whether that captures the random nature of it)
+(2) How confident do you feel that the variables you’ve included are actually confounders (and not colliders, mediators, proxies, potentially irrelevant variables, or independent causes of Y)?
+	- Theoretical justifications are a good starting point
+	- Drawing from other experimental and longitudinal studies can help
+	- Temporal ordering can help
+	- Correlations can possibly help rule out proxies and irrelevant variables, but they may also introduce bias
+	- Here, simulations are helpful because people are making decisions based on the sample
+(3) How confident do you feel that there are no omitted variables / additional confounds you haven’t measured or included?
+	- People are probably not going to be very confident in this, but we might be able to provide suggestions for how they can increase their confidence
+
+Other considerations:
+
+- We need to figure out which of the above points require simulations and which can be supported by hypothetical population models
+- We may also want to think of ordering these considerations in terms of which have the largest effects on bias
+- We can mention that bias can be in either direction (and reference Wysocki article), but that we are simulating bias in just one direction
+- We likely wouldn’t mix sources of bias (but instead say, here’s an additional problem even if you’ve solved the earlier ones)
+- We can also make a plug for prediction methods at the end
+
+
 # 2026-10-13
 
 We discussed next directions to take after reading the Wysocki et al. (2022) article. We determined that the paper had done much of what we were planning to do (but, in some cases, in a cleaner way). We talked about how we'd have to position our study as an extension of that paper, and make sure that it was in fact contributing to the literature (and not simply replicating what they had done). We talked about the following potential ways that we could differentiate our paper / extend the Wysocki et al. paper:
