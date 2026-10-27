@@ -1,5 +1,94 @@
 # Meeting notes
 
+# 2026-10-20
+
+We debriefed from the lab meeting, and decided that we will move forward, with the following goals:
+
+- Make more explicit the conclusions from the Psych Science paper
+- Empirically demonstrate each point through a series of simulations
+- Make conclusions obvious and recommendations actionable
+
+Our end goal is to encourage people to choose covariates very carefully, and to really grapple with the strength of their evidence based on their methods
+
+Throughout our simulations, we will generally limit our research contexts as follows, to reduce complexity: [EG note: In general, I think we can stick to these, and then only vary a research context to show how different contexts makes a problem even worse]
+
+- Use only one covariate
+- Not vary sample size (80% power to detect moderate X effect)
+- Have two levels of X (zero and non-zero)
+
+We will also examine the following throughout:
+
+- Average bias [EG note: Did we decide to do the absolute value of bias here?]
+- Type I error rates
+- Type II error rates
+
+Our questions / simulations are as follows:
+
+(1) We will investigate the magnitude and effects of bias when using data-driven covariate selection approaches
+	
+	- The Psych Science paper implied that data-driven covariate selection approaches would be inadequate, but that implication was never formally evaluated
+	- DGPs:
+		- Confounders
+		- Colliders
+		- Mediators
+		- Reverse causality? [EG note: This could be relevant for instances of bi-directional effects]
+		- Irrelevant variables? [EG note: One reason it seems people use data-driven approaches is to eliminate irrelevant variables; I think we wouldn't necessarily have to vary sample size, though]
+	- Covariate selection approaches:
+		- Significant correlation with X
+		- Significant correlation with Y
+		- Significant correlation with X and Y
+		- Other? (e.g., LASSO)
+	- Anticipated findings: Data-driven approaches result in bias / are inadequate, and we can't know if we are over- or under-estimating effect size unless we know the true DGP; therefore, theory-driven covariate selection approaches should be used
+
+(2) We will investigate how the magnitude and effects of bias vary based on the likelihood that our theory is correct
+
+	- DGPs:
+		- Confounders
+		- Colliders
+		- Mediators
+		- Reverse causality?
+		- Irrelevant variables?
+	- Likelihood of theory being correct:
+		- Vary probability of each DGP (e.g., 33%, 33%, 33% for weak theory)
+	- Anticipated findings: Even if we use theory-driven approaches, we will have bias unless there is a 100% likelihood that our theory is correct (that is, a 100% likelihood that our covariate is a confound), and the degree of that bias will depend on the likelihood that our theory is correct
+
+(3) We will investigate the magnitude and effects of bias if we don't measure every confounder (i.e., omitted variable bias)
+
+	- DGPs:
+		- Confounder only (plus at least one omitted confounder; could use >1 to show that the problem gets even worse when we have more than one omitted confounder)
+	- Effect of confounders on Y:
+		- Multiple non-zero levels? [EG note: I think this would allow us to indicate the effect size at which omitted variables start to pose a big problem, given that lots of variables are probably a little bit correlated with X and Y] 
+	- Anticipated finding: Even if we do everything else right (i.e., we use theory-driven approaches and our theory is 100% correct), we will still have bias unless we measure every confound
+
+(4) We will investigate the magnitude and effects of bias if we have measurement error [EG note: Are we including measurement error in just the confounders, or also in X?]
+
+	- DGPs:
+		- Confounder only (could include more than one to show that problem gets even worse when we have multiple confounders)
+	- Reliability:
+		- Will vary between .6 and .8
+	- Anticipated finding: Even if we do everything else right (i.e., we use theory-driven approaches, our theory is 100% correct, and we haven't omitted any confounders), we will still have bias if we have measurement error 
+
+For our recommendations, we could say:
+
+- Make sure you are using theoretical approaches to select covariates (especially in A and B cases)
+- Make sure you are very confident in your theory (above C threshold); longitudinal methods help here
+- Make sure you don’t have any omitted variables (above effect size of D)
+- Make sure you don’t have measurement error (above E)
+
+As next steps, Elise will think about the following:
+
+- Can we have six DGPs based on X effect (i.e., when X effect is zero)?
+	[EG note: It seems like the mediator might just become the independent causes of Y DGP? See dgps_zero_non-zero_x_effects.pdf]
+- Can we avoid manipulation of N?
+	[EG note: I think so; we could always move forward with our current plan of selecting N, and then re-run things with a small N, to show how these issues will likely be even worse there]
+- Can we avoid manipulation of effect size of X (other than zero/non-zero)?
+	[EG note: I think yes, but it might be useful to vary the size of the effect of omitted variables on Y for question/simulation #3]
+
+In addition, we determined that it would likely be easiest to start with question/simulation #2
+
+Finally, we will start to think about ways we can organize our code
+
+
 # 2026-10-14 (Lab Meeting)
 
 Peoples’ main issues with the Wysocki paper were that it advocated for theoretically selecting covariates, and highlighted the problems surrounding measurement error, but it didn’t provide concrete steps for how to actually select covariates. They also felt that including specific examples (both from simulations and from our fields) could help make the points from the Wysocki article more concrete.
