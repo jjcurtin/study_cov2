@@ -1,5 +1,49 @@
 # Meeting notes
 
+# 2026-10-27
+
+We made the following decisions:
+
+- We will include zero and non-zero X effects; if needed, we can always acknowledge that the mediation DGP with zero X effect is a bit implausible
+- We will only vary sample size and non-zero levels of X effects to make certain points (e.g., "this problem becomes worse when you have a small sample size")
+	- We can include those results in an appendix
+- We will set path coefficients such that the total effect of X on Y is .3 (so that we have a medium effect size)
+	- For the mediation DGP, this means setting the direct pathway between X and Y to .21
+- We will also set the effect between covariates and X and Y to .3
+- For simplicity, we will not include irrelevant variables or independent causes of Y (since it's hard to find variables uncorrelated with X at the population level), or reverse causality (because it's unlikely a researcher would be examining X effects if they thought Y could instead impact X)
+- Also for simplicity, we will not include unmeasured variables ("U"s), but we can potentially reference them in our discussion of measurement error (since proxies affect reliability)
+- For question #2 (related to the likelihood that our theory is correct), we decided to examine the following likelihoods:
+	- 33%
+	- 50%
+	- 75%
+	- 90%
+	- 100% 
+
+We also talked about starting simulations for question #2, and walked through what our jobs file and ultimate output will look like
+
+As next steps, Elise will:
+
+- Update our scripts (including our functions that simulate data based on our three DGPs)
+- Identify the number of simulations per job that will be allow us to create ~40k total simulations and that is divisible by all of our likelihoods (i.e., by 3, 8, and 20)
+- Create our jobs file (which we will keep oriented long)
+	- We will eliminate:
+		- n_covs
+		- r_cc
+		- e_x
+	- We can keep:
+		- dgp
+		- n_obs (in case we end up varying this later)
+		- e_cov
+		- b_xy
+		- b_cy
+		- b_cx
+	- We will add columns for:
+		- Which question we're simulating (using descriptive text labels)
+		- Whether the X effect is zero or non-zero
+		- Accuracy of our theory (for question #2; this allows us to filter results)
+	- Eventually, we will append on the beta and p-value for each job, and average the betas for each question
+
+
 # 2026-10-20
 
 We debriefed from the lab meeting, and decided that we will move forward, with the following goals:

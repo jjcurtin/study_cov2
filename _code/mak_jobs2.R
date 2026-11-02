@@ -4,57 +4,63 @@ source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true
 
 path_chtc <- format_path(str_c("cov2/chtc/batch_", Sys.Date()))
 
-dgp_lvls <- c("cc", "distr", "conseq")
-n_obs_lvls <- c(100, 200, 300, 500)
-n_covs_lvls <- c(1, 2, 4)
-b_xy_lvls <- c(0, 0.3)     # path coefficient between x and y
-b_cy_lvls <- c(0.1, 0.3)   # path coefficient between y and covs
-b_cx_lvls <- c(0.1, 0.3)   # path coefficient between x and covs
-r_cc_lvls <- c(0, .3)      # correlation between covs
-e_x_lvls <- c(0, 0.1)      # measurement error in x
-e_cov_lvls <- c(0, 0.1)    # measurement error in covs
- 
-#---------------------------
-# for testing
-dgp_lvls <- c("cc")
-n_obs_lvls <- c(500)
-n_covs_lvls <- c(1, 4)
-b_xy_lvls <- c(0, 0.3)     # path coefficient between x and y
-b_cy_lvls <- c(0.1)   # path coefficient between y and covs
-b_cx_lvls <- c(0.1)   # path coefficient between x and covs
-r_cc_lvls <- c(.3)      # correlation between covs
-e_x_lvls <- c(0.1)      # measurement error in x
-e_cov_lvls <- c(0.1)    # measurement error in covs
-#---------------------------
+# conduct power analysis to identify appropriate sample size
 
-# we want 40,000 simulations
-# batching jobs at 500 sims per job
-# 500 * 80 repeats = 40,0000 sims
+pwr_n <- ceiling(pwr::pwr.r.test(
+  r = 0.3,           
+  sig.level = 0.05,
+  power = 0.80,
+  n = NULL,          
+  alternative = "two.sided"
+)$n)
 
-jobs <- expand_grid(dgp = dgp_lvls,
-                    n_sims = 500,
+question_lvls <- c("likelihood")
+condition_lvls <- c(.33, .5, .75, .9, 1)
+dgp_lvls <- c("con", "col", "med")
+n_obs_lvls <- c(pwr_n)
+b_xy_lvls <- c(0, .21)
+e_c_lvls <- c(0)
+
+# we want 40,320 simulations
+# batching jobs at 336 sims per job
+# 336 * 120 repeats = 40,320 sims
+
+jobs <- expand_grid(
+                    question = question_lvls,
+                    condition = condition_lvls,
+                    n_sims = 336,
+                    dgp = dgp_lvls,
                     n_obs = n_obs_lvls,
-                    n_covs = n_covs_lvls,
                     b_xy = b_xy_lvls,
-                    b_cy = b_cy_lvls,
-                    b_cx = b_cx_lvls,
-                    r_cc = r_cc_lvls,
-                    e_x = e_x_lvls,
-                    e_cov = e_cov_lvls) |> 
+                    b_cx = .3,
+                    b_cy = .3,
+                    e_c = e_c_lvls) |> 
   mutate(
-    b_cy = mapply(
-      \(x, n) paste0("[", paste(rep(x, n), collapse = ", "), "]"),
-      b_cy, n_covs
-    ),
-    b_cx = mapply(
-      \(x, n) paste0("[", paste(rep(x, n), collapse = ", "), "]"),
-      b_cx, n_covs
+    b_xy = case_when(
+      (b_xy == .21 & dgp == "col") ~ .3,
+      TRUE ~ b_xy),
+    x_effect = case_when(
+      b_xy == 0 ~ "zero",
+      TRUE ~ "non_zero"
     )) |>
-  slice(rep(1:n(), each = 80)) |> 
+  slice(rep(seq_len(n()),
+            times = case_when(
+              condition == .33 ~ 40,
+              condition == .5 & dgp == "con" ~ 60,
+              condition == .5 & dgp == "col" ~ 30,
+              condition == .5 & dgp == "med" ~ 30,
+              condition == .75 & dgp == "con" ~ 90,
+              condition == .75 & dgp == "col" ~ 15,
+              condition == .75 & dgp == "med" ~ 15,
+              condition == .9 & dgp == "con" ~ 108,
+              condition == .9 & dgp == "col" ~ 6,
+              condition == .9 & dgp == "med" ~ 6,
+              condition == 1 & dgp == "con" ~ 120,
+              .default = 0L))) |> 
   mutate(job_num = row_number()) |> 
   relocate(job_num)
 
-nrow(jobs) * 500 / 540 # 40,000
+nrow(jobs) * 336 / 10 # 40,320
 
 # make new directory
 dir.create(here::here(path_chtc))
