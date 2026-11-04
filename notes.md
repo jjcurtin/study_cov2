@@ -1,5 +1,36 @@
 # Meeting notes
 
+# 2026-11-3
+
+We clarified the fact that for our path diagrams, we want the total causal effect of X on Y to be .3
+	- This doesn't mean that the covariance between X and Y will be .3 (and in fact, they often won't be due to spurious associations resulting from path tracing)
+	- In addition, this could result in variance-covariance matrices being identical between DGPs, which is part of the problem
+
+We further discussed how (at this stage) we want to keep the number of simulations per research context to be approximately 10k
+	- This would generate, for example, 100k total simulations for our second research question
+	- To clarify things, we may want to rename n_sims to n_sims_job
+	- At a later date we'll want to see how much time an individual job is taking to run, to see if our number of simulations per job is appropriate
+
+Finally, we talked about moving on to the 3rd research question (related to omitted variables)
+	- We decided that we will vary both the number of omitted variables, and the effect size of those variables, to make the point that several omitted variables with small effects introduce compounding bias
+		- We will vary the number of omitted variables from 1 to 3
+		- We will vary the effect size of those variables from Cohen's small to Cohen's medium effect, with something in-between
+		- We will keep the C effect on X and Y equal [EG note: Do we want to make it so the total causal effect of Cs on X and Y are equal, or just that the path coefficients are the same?]
+	- This will require us to generalize our fun_cov2 file to work for multiple covariates, which can be accomplished by viewing older versions of our code that allowed for this [EG note: I think we'd also need to re-incorporate an n_covs variable throughout]
+	- While we're in there, we can delete the current covariate selection code (all and none), and we can be thoughtful about how we're committing changes so we can easily recover that code if needed
+	- We will make the correlation between our confounds zero, for simplicity
+	- Finally, we will create separate jobs.csv files for each research question
+
+As next steps, Elise will:
+	- Update mak_jobs2 file so we have ~10k simulations per research context
+	- Rename n_sims to n_sims_job
+	- Read John's Introduction to Git and GitHub resources to understand how to view past versions of code
+	- Update the fun_cov2 file as indicated above
+	- Re-incorporate an n_covs variable throughout
+	- Make sure that code works with zero X effects
+	- Start creating separate jobs.csv files (and corresponding code)
+
+
 # 2026-10-27
 
 We made the following decisions:
