@@ -49,9 +49,14 @@ file.copy("_code/fun_cov2.R", here::here(path_chtc, "input"))
                       e_c = e_c_lvls,
                       n_covs = n_covs_lvls) |> 
     mutate(
-      b_cy = b_cx,
+      b_cy = case_when(
+        dgp == "con" ~ b_cx - (b_cx * b_xy),
+        TRUE ~ b_cx),
+      b_cx = case_when(
+        dgp == "col" ~ b_cy - (b_cy * b_xy),
+        TRUE ~ b_cx),
       b_xy = case_when(
-        (b_xy == .3 & dgp == "med") ~ .21,
+        (b_xy == .3 & dgp == "med") ~ .3 - (b_cx * b_cy),
         TRUE ~ b_xy),
       x_effect = case_when(
         b_xy == 0 ~ "zero",
@@ -94,9 +99,14 @@ file.copy("_code/fun_cov2.R", here::here(path_chtc, "input"))
                       e_c = e_c_lvls,
                       n_covs = n_covs_lvls) |> 
     mutate(
-      b_cy = b_cx,
+      b_cy = case_when(
+        dgp == "con" ~ b_cx - (b_cx * b_xy),
+        TRUE ~ b_cx),
+      b_cx = case_when(
+        dgp == "col" ~ b_cy - (b_cy * b_xy),
+        TRUE ~ b_cx),
       b_xy = case_when(
-        (b_xy == .3 & dgp == "med") ~ .21,
+        (b_xy == .3 & dgp == "med") ~ .3 - (b_cx * b_cy),
         TRUE ~ b_xy),
       x_effect = case_when(
         b_xy == 0 ~ "zero",
@@ -151,7 +161,7 @@ file.copy("_code/fun_cov2.R", here::here(path_chtc, "input"))
                       e_c = e_c_lvls,
                       n_covs = n_covs_lvls) |> 
     mutate(
-      b_cy = b_cx,
+      b_cy = b_cx - (b_cx * b_xy),
       x_effect = case_when(
         b_xy == 0 ~ "zero",
         TRUE ~ "non_zero"
@@ -193,15 +203,15 @@ file.copy("_code/fun_cov2.R", here::here(path_chtc, "input"))
                       e_c = e_c_lvls,
                       n_covs = n_covs_lvls) |> 
     mutate(
-      b_cy = b_cx,
+      b_cy = b_cx - (b_cx * b_xy),
       x_effect = case_when(
         b_xy == 0 ~ "zero",
         TRUE ~ "non_zero"
       )) |>
     slice(rep(seq_len(n()),
               times = 20)) |> 
-            mutate(job_num = row_number()) |> 
-            relocate(job_num)
+    mutate(job_num = row_number()) |> 
+    relocate(job_num)
           
     nrow(jobs) * 498 / 6 # 9,960
           

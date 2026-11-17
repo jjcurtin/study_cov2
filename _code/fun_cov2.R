@@ -205,6 +205,86 @@ generate_med <- function(n_obs, b_xy, b_cx, b_cy, e_c, n_covs, empirical) {
 }
 
 
+# fit all covariate model
+# fits linear model with all covariates
+fit_all_covs <- function(d) {
+  lm(y ~ ., data = d)
+}
+
+
+# fit no covariate model
+# fits linear model with no covariates
+fit_no_covs <- function(d) {
+  lm(y ~ x, data = d)
+}
+
+
+# fit x model
+# fits linear model with the covariate if it's significantly correlated with X
+
+fit_x <- function(d, alpha = 0.05) {
+  
+  # calculating correlation between covariate and X
+  
+  p_cor <- cor.test(d$x, d$c1, method = "pearson")$p.value
+  
+  # fit model with covariate if correlation is significant
+  
+  if (p_cor < alpha) {
+    formula_final <- reformulate(termlabels = c("x", "c1"), response = "y")
+    lm(formula = formula_final, data = d)
+  } else {
+    formula_final <- reformulate(termlabels = "x", response = "y")
+    lm(formula = formula_final, data = d)  
+  }
+  
+}
+
+
+# fit y model
+# fits linear model with the covariate if it's significantly correlated with Y
+
+fit_y <- function(d, alpha = 0.05) {
+  
+  # calculating correlation between covariate and Y
+  
+  p_cor <- cor.test(d$y, d$c1, method = "pearson")$p.value
+    
+  # fit model with covariate if correlation is significant
+  
+  if (p_cor < alpha) {
+    formula_final <- reformulate(termlabels = c("x", "c1"), response = "y")
+    lm(formula = formula_final, data = d)
+  } else {
+    formula_final <- reformulate(termlabels = "x", response = "y")
+    lm(formula = formula_final, data = d)  
+  }
+  
+}
+
+
+# fit x_y model
+# fits linear model with the covariate if it's significantly correlated with X and Y
+
+fit_x_y <- function(d, alpha = 0.05) {
+  
+  # calculating correlations between covariate and X, and covariate and Y
+  
+  p_cor_x <- cor.test(d$x, d$c1, method = "pearson")$p.value
+  p_cor_y <- cor.test(d$y, d$c1, method = "pearson")$p.value
+  
+  # fit model with selected covariates 
+  
+  if (p_cor_x < alpha & p_cor_y < alpha) {
+    formula_final <- reformulate(termlabels = c("x", "c1"), response = "y")
+    lm(formula = formula_final, data = d)
+  } else {
+    formula_final <- reformulate(termlabels = "x", response = "y")
+    lm(formula = formula_final, data = d)  
+  }
+  
+}
+
 # make results tibble
 get_results <- function(model, method, sim_num) {
   # model = an lm object
@@ -216,7 +296,7 @@ get_results <- function(model, method, sim_num) {
   output <- model |> broom::tidy() |> dplyr::filter(term == "x")
  
   # put it all in a results tibble
-  tibble::tibble(method = method, 
+  tibble::tibble(method = method,
                  simulation_id = sim_num,
                  estimate = output$estimate,
                  SE = output$std.error,
