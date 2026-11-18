@@ -2,17 +2,17 @@
 container_image = osdf:///chtc/staging/e/egurney2/train.sif
 
 executable = cov2.sh
-arguments = $(job_num) $(question) $(condition) $(n_sims_job) $(dgp) $(n_obs) $(b_xy) $(b_cx) $(e_c) $(n_covs) $(b_cy) $(x_effect)
+arguments = $(job_num) $(question) $(condition) $(n_sims_job) $(dgp) $(n_obs) $(b_xy) $(b_cx) $(b_cy) $(e_c) $(n_covs) $(x_effect)
 
 log = $(Cluster).log
 error = error/error_$(job_num).err
 
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
-transfer_output_remaps = "results_$(question)_$(job_num).csv = results/results_$(question)_$(job_num).csv"
+transfer_output_remaps = "results_$(job_num).csv = results/results_$(job_num).csv"
 on_exit_hold = exitcode != 0
 max_retries = 1
-transfer_input_files = train.sif, fun_cov2.R, fit_cov2.R, jobs_selection.csv, jobs_likelihood.csv, jobs_omitted.csv, jobs_reliability.csv
+transfer_input_files = train.sif, fun_cov2.R, fit_cov2.R, jobs.csv
 materialize_max_idle = 1000
 request_cpus = 1
 request_memory = 2000MB
@@ -20,8 +20,5 @@ request_disk = 1000MB
 want_campus_pools = true
 want_ospool = true
 
-rqs <- c("selection", "likelihood", "omitted", "reliability")
-for (i in rqs){
-  file_name <- paste0("jobs_", i, ".csv")
-  queue job_num question condition n_sims_job dgp n_obs b_xy b_cx e_c n_covs b_cy x_effect from file_name
-}
+
+queue job_num question condition n_sims_job dgp n_obs b_xy b_cx b_cy e_c n_covs x_effect from jobs.csv

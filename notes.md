@@ -1,57 +1,80 @@
 # Meeting notes
 
+# 2026-11-17
+
+We determined that:
+
+- We will set b_cx and b_cy equal to one another, and equal to .1, .2, or .3 (rather than changing one so that the total effects are equal to one another)
+	- This is inconsistent with what we're doing for b_xy in the mediator DGP, but it will be more straightforward
+- We will batch jobs at the level of our RQs
+	- This means we will just name our jobs.csv file "jobs.csv", and we won't name results files by RQ
+	- This also entails incorporating "if" statements into our mak_jobs.R file for each RQ
+- We will calculate power in a separate .R file
+
+As next steps, Elise will:
+
+- Make those changes to the code
+- Transfer updated code to three places (repo, research drive, CHTC)
+- Run test batches using abbreviated jobs.csv files
+- Debug, as needed
+- Concatenate results into one file and bring back over [EG note: not clear how or where to do this]
+- Potentially tune on memory and especially time (using instructions John has)
+- Reach out to CHTC to determine if we need to list train.sif in transfer input files
+- Clean out our repo and also folders on the research drive
+
+
 # 2026-11-13
 
 For the omitted variable research question, we clarified that:
 
-	- We don't need a "focal" confounder at all, but can simply have 1-3 missing confounders
-	- We want the total size of the confounder effect to be .1, .2, and .3 (which will be equal for X and Y), rather than the path coefficients
-	- In estimating the effects / doing the analysis, we will just regress Y on X and not include any of the confounders
+- We don't need a "focal" confounder at all, but can simply have 1-3 missing confounders
+- We want the total size of the confounder effect to be .1, .2, and .3 (which will be equal for X and Y), rather than the path coefficients
+- In estimating the effects / doing the analysis, we will just regress Y on X and not include any of the confounders
 
 In general, we discussed how:
 
-	- We will use 9,960 simulations for every research context, and explain that we chose that number so we had enough simulations, and so we could apportion specific simulated data sets in the ratios we needed
-	- We will create separate results files for each research question
+- We will use 9,960 simulations for every research context, and explain that we chose that number so we had enough simulations, and so we could apportion specific simulated data sets in the ratios we needed
+- We will create separate results files for each research question
 
 As next steps:
 
-	- John will independently confirm the power analysis (n = 85)
-	- Elise will update the code to reflect the items above; soon we want to be in a place to run at least one set of simulations to make sure things are working as we intended
+- John will independently confirm the power analysis (n = 85)
+- Elise will update the code to reflect the items above; soon we want to be in a place to run at least one set of simulations to make sure things are working as we intended
 
 
 # 2026-11-3
 
 We clarified the fact that for our path diagrams, we want the total causal effect of X on Y to be .3
 	
-	- This doesn't mean that the covariance between X and Y will be .3 (and in fact, they often won't be due to spurious associations resulting from path tracing)
-	- In addition, this could result in variance-covariance matrices being identical between DGPs, which is part of the problem
+- This doesn't mean that the covariance between X and Y will be .3 (and in fact, they often won't be due to spurious associations resulting from path tracing)
+- In addition, this could result in variance-covariance matrices being identical between DGPs, which is part of the problem
 
 We further discussed how (at this stage) we want to keep the number of simulations per research context to be approximately 10k
 	
-	- This would generate, for example, 100k total simulations for our second research question
-	- To clarify things, we may want to rename n_sims to n_sims_job
-	- At a later date we'll want to see how much time an individual job is taking to run, to see if our number of simulations per job is appropriate
+- This would generate, for example, 100k total simulations for our second research question
+- To clarify things, we may want to rename n_sims to n_sims_job
+- At a later date we'll want to see how much time an individual job is taking to run, to see if our number of simulations per job is appropriate
 
 Finally, we talked about moving on to the 3rd research question (related to omitted variables)
 	
-	- We decided that we will vary both the number of omitted variables, and the effect size of those variables, to make the point that several omitted variables with small effects introduce compounding bias
-		- We will vary the number of omitted variables from 1 to 3
-		- We will vary the effect size of those variables from Cohen's small to Cohen's medium effect, with something in-between
-		- We will keep the C effect on X and Y equal [EG note: Do we want to make it so the total causal effect of Cs on X and Y are equal, or just that the path coefficients are the same?]
-	- This will require us to generalize our fun_cov2 file to work for multiple covariates, which can be accomplished by viewing older versions of our code that allowed for this [EG note: I think we'd also need to re-incorporate an n_covs variable throughout]
-	- While we're in there, we can delete the current covariate selection code (all and none), and we can be thoughtful about how we're committing changes so we can easily recover that code if needed
-	- We will make the correlation between our confounds zero, for simplicity
-	- Finally, we will create separate jobs.csv files for each research question
+- We decided that we will vary both the number of omitted variables, and the effect size of those variables, to make the point that several omitted variables with small effects introduce compounding bias
+	- We will vary the number of omitted variables from 1 to 3
+	- We will vary the effect size of those variables from Cohen's small to Cohen's medium effect, with something in-between
+	- We will keep the C effect on X and Y equal [EG note: Do we want to make it so the total causal effect of Cs on X and Y are equal, or just that the path coefficients are the same?]
+- This will require us to generalize our fun_cov2 file to work for multiple covariates, which can be accomplished by viewing older versions of our code that allowed for this [EG note: I think we'd also need to re-incorporate an n_covs variable throughout]
+- While we're in there, we can delete the current covariate selection code (all and none), and we can be thoughtful about how we're committing changes so we can easily recover that code if needed
+- We will make the correlation between our confounds zero, for simplicity
+- Finally, we will create separate jobs.csv files for each research question
 
 As next steps, Elise will:
 	
-	- Update mak_jobs2 file so we have ~10k simulations per research context
-	- Rename n_sims to n_sims_job
-	- Read John's Introduction to Git and GitHub resources to understand how to view past versions of code
-	- Update the fun_cov2 file as indicated above
-	- Re-incorporate an n_covs variable throughout
-	- Make sure that code works with zero X effects
-	- Start creating separate jobs.csv files (and corresponding code)
+- Update mak_jobs2 file so we have ~10k simulations per research context
+- Rename n_sims to n_sims_job
+- Read John's Introduction to Git and GitHub resources to understand how to view past versions of code
+- Update the fun_cov2 file as indicated above
+- Re-incorporate an n_covs variable throughout
+- Make sure that code works with zero X effects
+- Start creating separate jobs.csv files (and corresponding code)
 
 
 # 2026-10-27

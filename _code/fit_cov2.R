@@ -19,24 +19,22 @@ dgp <- args[5]
 n_obs <- as.numeric(args[6])
 b_xy <- as.numeric(args[7])
 b_cx <- as.numeric(args[8])
-e_c <- as.numeric(args[9])
-n_covs <- as.numeric(args[10])
-b_cy <- as.numeric(args[11])
+b_cy <- as.numeric(args[9])
+e_c <- as.numeric(args[10])
+n_covs <- as.numeric(args[11])
 x_effect <- args[12]
 empirical <- FALSE
 
 #source("C:/Users/elise/github/study_cov2/_code/fun_cov2.R")
 source("fun_cov2.R")
 
-# Loop over sims
+# create tibble for results
+
+assign(full_results, tibble::tibble())
+
+# loop over sims
 
 set.seed(job_num)
-
-rqs <- c("selection", "likelihood", "omitted", "reliability")
-for (i in rqs) {
-  file_name <- paste0("full_results_", i)
-  assign(file_name, tibble::tibble())
-}
 
 for (i in 1:n_sims_job) {
 
@@ -61,7 +59,7 @@ for (i in 1:n_sims_job) {
   
   if (question == "selection") {
     
-    results_selection <- dplyr::bind_rows(
+    results <- dplyr::bind_rows(
       get_results(model = fit_x(di),
                   method = "x",
                   sim_num = i),
@@ -72,48 +70,43 @@ for (i in 1:n_sims_job) {
                   method = "x_y",
                   sim_num = i))
     
-    full_results_selection <- dplyr::bind_rows(full_results_selection, results_selection)
+    full_results <- dplyr::bind_rows(full_results, results)
   }
   
   if (question == "likelihood") {
     
-    results_likelihood <- get_results(
+    results <- get_results(
       model = fit_all_covs(di), 
       method = "all_covs", 
       sim_num = i)
     
-    full_results_likelihood <- dplyr::bind_rows(full_results_likelihood, results_likelihood)
+    full_results <- dplyr::bind_rows(full_results, results)
   }
   
   if (question == "omitted") {
     
-    results_omitted <-
+    results <-
       get_results(
         model = fit_no_covs(di),
         method = "no_covs", 
         sim_num = i)
 
-    full_results_omitted <- dplyr::bind_rows(full_results_omitted, results_omitted)
+    full_results_omitted <- dplyr::bind_rows(full_results, results)
   }
   
   if (question == "reliability") {
     
-    results_reliability <- get_results(
+    results <- get_results(
       model = fit_all_covs(di), 
       method = "all_covs", 
       sim_num = i)
     
-    full_results_reliability <- dplyr::bind_rows(full_results_reliability, results_reliability)
+    full_results <- dplyr::bind_rows(full_results, results)
   }
     
 }
 
 # merge research context information into results files
-
-  # create file name
-  
-  file_name <- paste0("full_results_", question)
-  full_results <- get(file_name)
   
   # add job_num as first column
   
@@ -136,9 +129,9 @@ for (i in 1:n_sims_job) {
                                      n_obs = n_obs,
                                      b_xy = b_xy,
                                      b_cx = b_cx,
+                                     b_cy = b_cy,
                                      e_c = e_c,
                                      n_covs = n_covs,
-                                     b_cy = b_cy,
                                      x_effect = x_effect)
   
   # join full results and write to csv file
@@ -148,4 +141,4 @@ for (i in 1:n_sims_job) {
   
   readr::write_csv(
     full_results,
-    stringr::str_c("results_", question, "_", job_num, ".csv"))
+    stringr::str_c("results_", job_num, ".csv"))
