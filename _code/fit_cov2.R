@@ -28,13 +28,13 @@ empirical <- FALSE
 #source("C:/Users/elise/github/study_cov2/_code/fun_cov2.R")
 source("fun_cov2.R")
 
+set.seed(job_num)
+
 # create tibble for results
 
-assign(full_results, tibble::tibble())
+full_results <- tibble::tibble()
 
 # loop over sims
-
-set.seed(job_num)
 
 for (i in 1:n_sims_job) {
 
@@ -91,7 +91,7 @@ for (i in 1:n_sims_job) {
         method = "no_covs", 
         sim_num = i)
 
-    full_results_omitted <- dplyr::bind_rows(full_results, results)
+    full_results <- dplyr::bind_rows(full_results, results)
   }
   
   if (question == "reliability") {

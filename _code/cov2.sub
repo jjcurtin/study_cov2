@@ -20,5 +20,4 @@ request_disk = 1000MB
 want_campus_pools = true
 want_ospool = true
 
-
 queue job_num question condition n_sims_job dgp n_obs b_xy b_cx b_cy e_c n_covs x_effect from jobs.csv
