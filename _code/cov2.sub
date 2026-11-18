@@ -12,7 +12,7 @@ when_to_transfer_output = ON_EXIT
 transfer_output_remaps = "results_$(job_num).csv = results/results_$(job_num).csv"
 on_exit_hold = exitcode != 0
 max_retries = 1
-transfer_input_files = train.sif, fun_cov2.R, fit_cov2.R, jobs.csv
+transfer_input_files = fun_cov2.R, fit_cov2.R, jobs.csv
 materialize_max_idle = 1000
 request_cpus = 1
 request_memory = 2000MB
