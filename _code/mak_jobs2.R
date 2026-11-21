@@ -96,10 +96,10 @@ jobs <- expand_grid(
                     n_obs = n_obs_lvls,
                     b_xy = b_xy_lvls,
                     b_cx = b_cx_lvls,
-                    b_cy = b_cx,
                     e_c = e_c_lvls,
                     n_covs = n_covs_lvls) |>
   mutate(
+    b_cy = b_cx,
     b_xy = case_when(
       (b_xy == .3 & dgp == "med") ~ .3 - (b_cx * b_cy),
       TRUE ~ b_xy),
@@ -131,7 +131,8 @@ if (question == "likelihood") {
       }
 jobs <- jobs |>
   mutate(job_num = row_number()) |> 
-  relocate(job_num)
+  relocate(job_num) |>
+  relocate(b_cy, .before = e_c)
   
 # write jobs to input
 jobs |> write_csv(here::here(path_chtc, "input", "jobs.csv"), 
