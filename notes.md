@@ -1,5 +1,26 @@
 # Meeting notes
 
+# 2026-11-24
+
+We decided the following:
+
+- We will rename our .sif file anytime we update it, per CHTC's guidance
+- We will execute our new cleanup.sh file after executing the combine.sh file to clean up our home folder
+- We will increase our number of simulations from ~10k to ~40k
+- We will reduce our memory requirements from 2k MB to 1k MB [EG note: I will check this again after increasing the number of simulations]
+- We will keep disc space as-is
+- We will not worry about tuning on amount of time per job
+	- Eventually, we may consider bundling together all of our jobs
+- We will examine average parameter estimates (not worrying about absolute values or SEs for now), and Type I and Type II error rates
+
+As next steps, Elise will:
+
+- Make the changes noted above
+- Run all jobs for the research contexts we have finalized (i.e., all but reliability)
+- Start computing average parameter estimates and Type I and Type II error rates
+- Come back with any questions from that process
+
+
 # 2026-11-17
 
 We determined that:
@@ -19,7 +40,7 @@ As next steps, Elise will:
 - Debug, as needed
 - Concatenate results into one file and bring back over [EG note: not clear how or where to do this]
 - Potentially tune on memory and especially time (using instructions John has)
-- Reach out to CHTC to determine if we need to list train.sif in transfer input files
+- Reach out to CHTC to determine if we need to list train.sif in transfer input files [EG note: we do need to remove it]
 - Clean out our repo and also folders on the research drive
 
 

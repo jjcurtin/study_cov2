@@ -28,7 +28,7 @@ if (question == "selection") {
 
   question_lvls <- c("selection")
   condition_lvls <- c(0)
-  n_sims_job_lvls = c(498)
+  n_sims_job_lvls = c(1992)
   dgp_lvls <- c("con", "col", "med")
   n_obs_lvls <- c(pwr_n)
   b_xy_lvls <- c(0, .3)
@@ -44,7 +44,7 @@ if (question == "likelihood") {
   
   question_lvls <- c("likelihood")
   condition_lvls <- c(.33, .5, .75, .9, 1)
-  n_sims_job_lvls = c(83)
+  n_sims_job_lvls = c(332)
   dgp_lvls <- c("con", "col", "med")
   n_obs_lvls <- c(pwr_n)
   b_xy_lvls <- c(0, .3)
@@ -60,7 +60,7 @@ if (question == "omitted") {
   
   question_lvls <- c("omitted")
   condition_lvls <- c(0)
-  n_sims_job_lvls = c(498)
+  n_sims_job_lvls = c(1992)
   dgp_lvls <- c("con")
   n_obs_lvls <- c(pwr_n)
   b_xy_lvls <- c(0, .3)
@@ -76,7 +76,7 @@ if (question == "reliability") {
   
   question_lvls <- c("reliability")
   condition_lvls <- c(0)
-  n_sims_job_lvls = c(498)
+  n_sims_job_lvls = c(1992)
   dgp_lvls <- c("con")
   n_obs_lvls <- c(pwr_n)
   b_xy_lvls <- c(0, .3)
